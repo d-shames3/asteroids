@@ -1,3 +1,4 @@
+import sys
 import pygame
 from constants import *
 from player import Player
@@ -23,7 +24,7 @@ def main():
     Player.containers = (updateable, drawable)
     player = Player(x = SCREEN_WIDTH / 2, y = SCREEN_HEIGHT / 2)
 
-    Shot.containers = (updateable, drawable)
+    Shot.containers = (shots, updateable, drawable)
 
     print("Starting asteroids!")
     print(f"Screen width: {SCREEN_WIDTH}")
@@ -44,7 +45,12 @@ def main():
 
         for asteroid in asteroids:
             if asteroid.has_collision(player):
-                exit("Game Over!")
+                sys.exit("Game Over!")
+
+            for shot in shots:
+                if asteroid.has_collision(shot):
+                    asteroid.kill()
+                    shot.kill()
 
         pygame.display.flip()
         
